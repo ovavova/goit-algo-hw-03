@@ -1,10 +1,13 @@
+#!/usr/bin/env python3 #шебанг
+
 import sys
+import os
 import shutil
 from pathlib import Path
 
 # ANSI escape codes for colored output
-COLOR_BLUE = "\\033[94m"
-COLOR_RESET = "\\033[0m"
+COLOR_BLUE = "\033[94m"
+COLOR_RESET = "\033[0m"
 
 
 
@@ -18,7 +21,7 @@ def arguments_parsing(*argv):
         raise ValueError(f"You need to provide at least one source directory name to copy from and one optional to copy too") 
     
     src = argv[0]
-    dest = argv[1] if len(argv) == 2 else "destination"
+    dest = argv[1] if len(argv) == 2 else "destination" # dafault name is destination fto copy to
 
     # Validate source exists
     if not os.path.isdir(src):
@@ -42,7 +45,7 @@ def copy_folder_tree(src: str | Path, dest: str | Path) -> None:
     RECURSIVE DIRECTORY READER + COPIER
     - Iterates items in 'src' directory.
     - If item is a directory, recurses.
-    - If item is a file (or existing file symlink), copies it into 'dest' grouped by extension.
+    - If item is a file - copies it into 'dest' grouped by extension.
     """
     src_path = Path(src)
     dest_root = Path(dest)
@@ -53,9 +56,9 @@ def copy_folder_tree(src: str | Path, dest: str | Path) -> None:
                 # Рекурсивно обходимо піддиректорії
                 copy_folder_tree(item, dest_root)         # Рекурсія
             elif item.is_file():
-                ext = item.suffix[1:] if item.suffix else "no_extension"
+                ext = item.suffix[1:] if item.suffix else "no_extension" # читаємо розширення файлу
                 target_dir = dest_root / ext
-                ensure_directory(target_dir)
+                ensure_directory(target_dir) # створюємо директорі. якщо ще намє
                 try:
                     shutil.copy2(item, target_dir / item.name)
                 except Exception as e:
@@ -87,6 +90,7 @@ if __name__ == "__main__":
     try:
         src, dest = arguments_parsing(*sys.argv[1:]) # читаєжмо перші аргументи - директорії src & dest
         copy_folder_tree(src, dest)
+        print("Copy is Sucsessful! result is:")
         display_tree(Path(dest))
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
