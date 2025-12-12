@@ -92,7 +92,7 @@ def main():
     # Add how deep to go
     while True:
         try:
-            sierpinski_level = int(input("Please eneter how many triangles to draw (1-5): "))
+            sierpinski_level = int(input("Please eneter how many triangles to draw (0-5) 0 for snowflake: "))
             if sierpinski_level < 0 or sierpinski_level > 5:
                 raise ValueError("Number must be 1-5")
             break
@@ -101,9 +101,9 @@ def main():
         
     while True:
         try:
-            koch_order = int(input("Please enter the recursion level in koch (1-5): "))
-            if koch_order < 0 or koch_order > 5:
-                raise ValueError("Number must be 1-5")
+            koch_order = int(input("Please enter the recursion level in koch (0-10): "))
+            if koch_order < 0 or koch_order > 10:
+                raise ValueError("Number must be 0-10")
             break
         except ValueError as e:
             print(f"Invalid input: {e}")
